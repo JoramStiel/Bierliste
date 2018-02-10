@@ -72,7 +72,10 @@ public class CreateParty extends AppCompatActivity {
     private Image PartyImage;
 
 
-    private enum Step{
+    private DrinkListViewAdapter drinkListViewAdapter;
+
+
+    private enum Step {
         ImageAndName, Drinks
     }
 
@@ -86,7 +89,7 @@ public class CreateParty extends AppCompatActivity {
     }
 
 
-    private void InitializeViews(){
+    private void InitializeViews() {
         ivPartyImage = findViewById(R.id.ivPartyImage);
         etPartyName = findViewById(R.id.etPartyName);
 
@@ -102,7 +105,7 @@ public class CreateParty extends AppCompatActivity {
 
         barcodeDetector = new BarcodeDetector.Builder(this).build();
 
-        cameraSource = new CameraSource.Builder(this,barcodeDetector)
+        cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setAutoFocusEnabled(true)
                 .build();
 
@@ -118,6 +121,16 @@ public class CreateParty extends AppCompatActivity {
                         return;
                     }*/
 
+                    /**if (ActivityCompat.checkSelfPermission(CreateParty.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }*/
                     cameraSource.start(svDetectNewDrink.getHolder());
 
 
@@ -236,7 +249,7 @@ public class CreateParty extends AppCompatActivity {
         defaultDrinks.add(new Drink(2,"b","Mühlen Kölsch",2.1));
         defaultDrinks.add(new Drink(3,"c","Köpi",2.1));
 
-        DrinkListViewAdapter drinkListViewAdapter = new DrinkListViewAdapter(this,defaultDrinks);
+        drinkListViewAdapter = new DrinkListViewAdapter(this,defaultDrinks);
         lvAddedDrinks.setAdapter(drinkListViewAdapter);
     }
 
@@ -306,6 +319,37 @@ public class CreateParty extends AppCompatActivity {
     }
 
 
+
     public void addNewDrinkButtonClicked(View view) {
+        String barcode = etAddDrinkBarcode.getText().toString();
+
+        if(barcode==null||barcode.trim()==""){
+            Toast.makeText(CreateParty.this, "Sorry, barcode needed for identification!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String drinkName = etAddDrinkName.getText().toString();
+
+        if(drinkName==null||drinkName.trim()==""){
+            Toast.makeText(CreateParty.this, "Very funny! No Name, boy!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double price = Double.parseDouble(etAddDrinkPrice.getText().toString());
+
+
+        drinkListViewAdapter.addItem(new Drink(0,barcode,drinkName,price));
+
+        llDrinkParameters.setVisibility(View.GONE);
+        svDetectNewDrink.setVisibility(View.VISIBLE);
+    }
+
+
+    public void cancelAddNewDrinkButtonClicked(View view) {
+        etAddDrinkBarcode.setText("");
+        etAddDrinkName.setText("");
+
+        llDrinkParameters.setVisibility(View.GONE);
+        svDetectNewDrink.setVisibility(View.VISIBLE);
     }
 }

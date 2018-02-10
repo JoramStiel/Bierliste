@@ -81,4 +81,26 @@ public class DrinkListViewAdapter extends BaseAdapter {
 
         return view;
     }
+
+    public boolean addItem(Drink drink){
+        if(drink==null)
+            return false;
+
+        long idHighest = 0;
+        for (Drink ctDrink: drinks) {
+            if(ctDrink.Barcode==drink.Barcode){
+                return false;
+            }
+
+            if(idHighest<ctDrink.Id){
+                idHighest=ctDrink.Id;
+            }
+        }
+
+        drink.Id = idHighest+1;
+        drinks.add(drink);
+        notifyDataSetChanged();
+
+        return true;
+    }
 }

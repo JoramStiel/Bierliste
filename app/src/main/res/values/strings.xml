@@ -6,4 +6,7 @@
     <string name="back">Zurück</string>
     <string name="btnAddNewDrinkText">Hinzufügen</string>
     <string name="btnCancelAddNewDrink">Abbrechen</string>
+    <string name="tvAddDrinkName">Name</string>
+    <string name="tvAddDrinkBarcode">Barcode</string>
+    <string name="tvAddDrinkPrice">Preis</string>
 </resources>
