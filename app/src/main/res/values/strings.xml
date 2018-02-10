@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Bierliste</string>
+    <string name="btnSelectImage">Select Image</string>
+    <string name="forward">Weiter</string>
+    <string name="finish">Fertig</string>
+    <string name="back">Zurück</string>
+    <string name="btnAddNewDrinkText">Hinzufügen</string>
+    <string name="btnCancelAddNewDrink">Abbrechen</string>
 </resources>
