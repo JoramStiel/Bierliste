@@ -96,6 +96,10 @@ public class CreateParty extends AppCompatActivity {
         svDetectNewDrink = findViewById(R.id.svDetectNewDrink);
         llDrinkParameters = findViewById(R.id.llDrinkParameters);
 
+        etAddDrinkBarcode = findViewById(R.id.etAddDrinkBarcode);
+        etAddDrinkName = findViewById(R.id.etAddDrinkName);
+        etAddDrinkPrice = findViewById(R.id.etAddDrinkPrice);
+
         barcodeDetector = new BarcodeDetector.Builder(this).build();
 
         cameraSource = new CameraSource.Builder(this,barcodeDetector)
@@ -141,12 +145,17 @@ public class CreateParty extends AppCompatActivity {
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-                SparseArray<Barcode> barcodes = detections.getDetectedItems();
+                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if(barcodes.size()>0){
-                    svDetectNewDrink.setVisibility(View.GONE);
-                    llDrinkParameters.setVisibility(View.VISIBLE);
-                    etAddDrinkBarcode.setText(barcodes.valueAt(0).rawValue);
-                    etAddDrinkName.setText(barcodes.valueAt(0).displayValue);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            svDetectNewDrink.setVisibility(View.GONE);
+                            llDrinkParameters.setVisibility(View.VISIBLE);
+                            etAddDrinkBarcode.setText(barcodes.valueAt(0).rawValue);
+                            etAddDrinkName.setText(barcodes.valueAt(0).displayValue);
+                        }
+                    });
                 }
             }
         });
